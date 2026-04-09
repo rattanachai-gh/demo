@@ -11,10 +11,11 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent {
 
-  constructor(private authService: AuthService, private productService: ProductService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private productService: ProductService,
+    private router: Router
+  ) {}
 
-  }
-
-  
 
 }

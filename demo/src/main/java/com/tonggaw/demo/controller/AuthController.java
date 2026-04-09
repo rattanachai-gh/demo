@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,6 +82,28 @@ public class AuthController {
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body("Invalid username or password");
         }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(Authentication authentication) {
+        if (authentication == null ||
+            !authentication.isAuthenticated() ||
+            authentication instanceof AnonymousAuthenticationToken) {
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                Map.of(
+                    "authenticated", false,
+                    "message", "User is not authenticated"
+                )
+            );
+        }
+
+        return ResponseEntity.ok(
+            Map.of(
+                "authenticated", true,
+                "username", authentication.getName()
+            )
+        );
     }
 
 
