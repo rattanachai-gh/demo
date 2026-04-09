@@ -1,0 +1,5 @@
+{
+    "prettier.prettierPath": "C:\\Users\\user\\Documents\\tonggaw_shop\\frontend-demo\\node_modules\\prettier",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "java.compile.nullAnalysis.mode": "disabled"
+}

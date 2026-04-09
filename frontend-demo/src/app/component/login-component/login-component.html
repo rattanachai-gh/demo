@@ -1,0 +1,48 @@
+<section class="login-shell">
+  <div class="login-backdrop"></div>
+
+  <div class="login-card">
+    <div class="brand-block">
+      <p class="eyebrow">Tonggaw Shop</p>
+      <h1>Welcome back</h1>
+      <p class="subtitle">
+        Sign in to manage your orders, browse products, and continue your
+        shopping journey.
+      </p>
+    </div>
+
+    <form class="login-form" (submit)="login(); $event.preventDefault()">
+      <label class="field">
+        <span>Username</span>
+        <input
+          type="text"
+          name="username"
+          autocomplete="username"
+          placeholder="Enter your username"
+          [value]="credentials.username || ''"
+          (input)="credentials.username = $any($event.target).value"
+        />
+      </label>
+
+      <label class="field">
+        <span>Password</span>
+        <input
+          type="password"
+          name="password"
+          autocomplete="current-password"
+          placeholder="Enter your password"
+          [value]="credentials.password || ''"
+          (input)="credentials.password = $any($event.target).value"
+        />
+      </label>
+
+      <button
+        class="login-button"
+        type="submit"
+        [disabled]="!credentials.username || !credentials.password"
+      >
+        Sign In
+      </button>
+    </form>
+  </div>
+</section>
