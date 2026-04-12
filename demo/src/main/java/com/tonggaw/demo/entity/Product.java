@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name="products")
@@ -38,9 +40,13 @@ public class Product {
 	
 	
 	private Date expiredDate;
+
+	@Getter
+	@Setter
+	private String productBarCode;
 	
 	@ManyToOne
-	@JoinColumn(name = "username")
+	@JoinColumn(name = "username", nullable = true)
 	private User byUser;
 
 

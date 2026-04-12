@@ -1,0 +1,67 @@
+<section class="product-shell">
+  <div class="product-backdrop"></div>
+
+  <article class="product-card">
+    <div class="product-header">
+      <div>
+        <p class="eyebrow">Inventory</p>
+        <h1>Add Product</h1>
+      </div>
+
+      <a class="back-link" routerLink="/home">Back to home</a>
+    </div>
+
+    <p class="description">
+      This page is prepared to match the current fields in the `Product` entity from the demo backend.
+      The save API is not available yet, so this page is ready for the next integration step.
+    </p>
+
+    <form class="product-form">
+      <label>
+        <span>Product SKU</span>
+        <input type="text" placeholder="SKU-0001" />
+      </label>
+
+      <label>
+        <span>Product Name</span>
+        <input type="text" placeholder="Arabica Coffee Beans" />
+      </label>
+
+      <label>
+        <span>Unit of Measure</span>
+        <input type="text" placeholder="bag, box, bottle" />
+      </label>
+
+      <label>
+        <span>Product Quantity</span>
+        <input type="number" placeholder="0" />
+      </label>
+
+      <label>
+        <span>Price Per Unit</span>
+        <input type="number" placeholder="0" />
+      </label>
+
+      <label>
+        <span>Received Date</span>
+        <input type="date" />
+      </label>
+
+      <label>
+        <span>Expired Date</span>
+        <input type="date" />
+      </label>
+
+      <div class="hint-box">
+        <p>Next backend step needed:</p>
+        <p>Create a product controller/service/repository endpoint to save product data for the authenticated user.</p>
+      </div>
+
+      <div class="action-row">
+        <button type="button" class="disabled-action" disabled>
+          Save product coming soon
+        </button>
+      </div>
+    </form>
+  </article>
+</section>

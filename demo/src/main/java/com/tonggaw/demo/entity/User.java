@@ -1,8 +1,5 @@
 package com.tonggaw.demo.entity;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name="users")
@@ -36,7 +35,7 @@ public class User {
 	private String userLastName;
 	
 	
-	@OneToMany(mappedBy = "byUser", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "byUser",cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = false)
     private List<Product> products = new ArrayList<>();
 	
 	public String getUsername() {
