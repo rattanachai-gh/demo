@@ -20,4 +20,11 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+
+    public String findByBarcode(String barcode) {
+    
+        return productRepository.findByBarcode(barcode);
+
+    }
+
 }

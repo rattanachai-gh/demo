@@ -45,6 +45,9 @@ public class ProductController {
         product.setExpiredDateExisted(productDTO.expiredDateExisted());
         product.setRecievedDate(productDTO.recievedDate());
         product.setExpiredDate(productDTO.expiredDate());
+        if (productService.findByBarcode(productDTO.productBarCode()).equals(productDTO.productBarCode())) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Product with the same barcode already exists"));
+        }
         product.setProductBarCode(productDTO.productBarCode());
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         String byUserName = userDetails.getUsername();

@@ -48,56 +48,30 @@
 
       <label>
         <span>Product Barcode</span>
-        <input name="productBarCode" [(ngModel)]="productForm.productBarCode" />
-      </label>
-
-      <div class="barcode-field">
-        <label>
-          <span>Product Barcode</span>
+        <div style="display: flex; gap: 8px;">
           <input
             name="productBarCode"
             [(ngModel)]="productForm.productBarCode"
-            placeholder="Scan or type barcode"
+            placeholder="Type or scan barcode"
+            style="flex: 1"
           />
-        </label>
-
-        <button
-          type="button"
-          class="secondary-action"
-          (click)="openScanner()"
-        >
-          Scan barcode
-        </button>
-      </div>
+          <button type="button" (click)="openScanner()">
+            Scan
+          </button>
+        </div>
+      </label>
 
       @if (isScannerOpen) {
-        <section class="scanner-card">
-          <p class="scanner-title">Barcode Scanner</p>
-
-          <zxing-scanner
-            [enable]="isScannerOpen"
-            (scanSuccess)="onScanSuccess($event)"
-            (permissionResponse)="onPermissionResponse($event)"
-            (scanError)="onScanError($event)"
-          >
-          </zxing-scanner>
-
-          @if (hasCameraPermission === false) {
-            <p class="feedback error">
-              ไม่สามารถใช้งานกล้องได้ กรุณาอนุญาต camera permission
-            </p>
-          }
-
-          <div class="scanner-actions">
-            <button
-              type="button"
-              class="secondary-action"
-              (click)="closeScanner()"
-            >
-              Close scanner
-            </button>
+        <div class="scanner-overlay">
+          <div class="scanner-modal">
+            <p class="scanner-label">Point camera at barcode</p>
+            <video #scannerVideo autoplay playsinline></video>
+            @if (scannerError) {
+              <p class="scanner-error">{{ scannerError }}</p>
+            }
+            <button type="button" (click)="closeScanner()">Cancel</button>
           </div>
-        </section>
+        </div>
       }
 
       <label>
@@ -118,7 +92,6 @@
         />
       </label>
 
-      <!-- Received Date -->
       <div class="date-toggle-group">
         <label class="checkbox-field">
           <input
@@ -126,7 +99,7 @@
             [checked]="noReceivedDate"
             (change)="onNoReceivedDateChange($any($event.target).checked)"
           />
-          <span>ไม่มีวันรับสินค้า</span>
+          <span>No received date</span>
         </label>
 
         @if (!noReceivedDate) {
@@ -141,7 +114,6 @@
         }
       </div>
 
-      <!-- Expired Date -->
       <div class="date-toggle-group">
         <label class="checkbox-field">
           <input
@@ -149,7 +121,7 @@
             [checked]="noExpiredDate"
             (change)="onNoExpiredDateChange($any($event.target).checked)"
           />
-          <span>ไม่มีวันหมดอายุสินค้า</span>
+          <span>No expiry date</span>
         </label>
 
         @if (!noExpiredDate) {
@@ -170,7 +142,8 @@
             <p class="confirmation-badge">Ready to save</p>
             <p class="confirmation-title">Confirm product save?</p>
             <p class="confirmation-copy">
-              ตรวจสอบข้อมูลสินค้าอีกครั้ง แล้วกดบันทึกเพื่อเพิ่มสินค้าเข้าสู่ inventory
+              ตรวจสอบข้อมูลสินค้าอีกครั้ง แล้วกดบันทึกเพื่อเพิ่มสินค้าเข้าสู่
+              inventory
             </p>
           </div>
 

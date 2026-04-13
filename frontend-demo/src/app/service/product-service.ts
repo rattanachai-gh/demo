@@ -10,8 +10,9 @@ import { switchMap } from 'rxjs';
 export class ProductService  {
 
 
-  private productApiUrl = `https://localhost:8080/api/products`;
-  // private productApiUrl = `http://192.168.1.112:8080/api/products`;
+  // private productApiUrl = `https://localhost:8080/api/products`;
+ // private productApiUrl = `http://192.168.1.112:8080/api/products`;
+  private productApiUrl = `https://192.168.1.112:8080/api/products`;
   constructor(
     private http: HttpClient,
     private authService: AuthService,

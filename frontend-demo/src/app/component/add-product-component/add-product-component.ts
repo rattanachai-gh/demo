@@ -1,26 +1,25 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Product } from '../../model/product.model';
 import { ProductService } from '../../service/product-service';
-import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { BarcodeScannerService } from '../../service/barcode-scanner';
+
 @Component({
   selector: 'app-add-product-component',
   standalone: true,
-  imports: [RouterLink, FormsModule, ZXingScannerModule],
+  imports: [RouterLink, FormsModule],
   templateUrl: './add-product-component.html',
   styleUrl: './add-product-component.css',
 })
 export class AddProductComponent {
-  @ViewChild('productNgForm') productNgForm?: NgForm;
 
-
-  // Scanner related properties
+  // เพิ่ม ViewChild สำหรับ video element
+  @ViewChild('scannerVideo') scannerVideo?: ElementRef<HTMLVideoElement>;
   isScannerOpen = false;
-  hasCameraPermission: boolean | null = null;
-  scannedBarcode = '';
+  scannerError = '';
 
-
+  @ViewChild('productNgForm') productNgForm?: NgForm;
 
   noReceivedDate = false;
   noExpiredDate = false;
@@ -43,7 +42,7 @@ export class AddProductComponent {
     expiredDate: '',
   };
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService,private scannerService: BarcodeScannerService) {}
 
   addProduct(): void {
     this.showSaveConfirmation = true;
@@ -148,34 +147,34 @@ export class AddProductComponent {
     this.toastMessage = '';
   }
 
-
-
-  openScanner(): void {
+  async openScanner(): Promise<void> {
     this.isScannerOpen = true;
-    this.errorMessage = '';
+    this.scannerError = '';
+    let hasScanned = false;
+    // รอให้ DOM render video element ก่อน
+    setTimeout(async () => {
+      if (!this.scannerVideo?.nativeElement) return;
+      try {
+        await this.scannerService.startScan(
+          this.scannerVideo.nativeElement,
+          (barcode) => {
+            hasScanned = true;
+            this.productForm.productBarCode = barcode;
+            this.closeScanner();
+          }
+        );
+      } catch (err: any) {
+        this.scannerError = 'ไม่สามารถเข้าถึงกล้องได้ กรุณาอนุญาตการใช้กล้อง';
+      }
+    }, 100);
   }
 
   closeScanner(): void {
+    this.scannerService.stopScan();
     this.isScannerOpen = false;
   }
 
-  onScanSuccess(result: string): void {
-    this.scannedBarcode = result;
-    this.productForm.productBarCode = result;
-    this.showToast(`Scanned barcode: ${result}`, 'success');
-    this.isScannerOpen = false;
-  }
-
-  onPermissionResponse(permissionGranted: boolean): void {
-    this.hasCameraPermission = permissionGranted;
-
-    if (!permissionGranted) {
-      this.errorMessage = 'Camera permission was denied.';
-      this.showToast(this.errorMessage, 'error');
-    }
-  }
-
-  onScanError(error: unknown): void {
-    console.error('Barcode scan error:', error);
+  ngOnDestroy(): void {
+    this.scannerService.stopScan();
   }
 }
