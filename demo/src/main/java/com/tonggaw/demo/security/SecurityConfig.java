@@ -97,7 +97,10 @@ public class SecurityConfig {
 	
 	UrlBasedCorsConfigurationSource apiConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("https://localhost:4200"));
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200",
+        "http://192.168.1.112:4200",
+        "https://localhost:4200",
+        "https://192.168.1.112:4200"));
 		configuration.setAllowedMethods(Arrays.asList("GET","POST"));
 		configuration.setAllowedHeaders(Arrays.asList("Authorization","Content-Type","X-CSRF-TOKEN"));
 		configuration.setAllowCredentials(true);

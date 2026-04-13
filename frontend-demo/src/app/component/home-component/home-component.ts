@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth-service';
 
 @Component({
   selector: 'app-home-component',
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './home-component.html',
   styleUrl: './home-component.css',
 })
@@ -30,6 +30,10 @@ export class HomeComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  goToAddProductPage(): void {
+    this.router.navigate(['/add-product']);
   }
 
   logout(): void {

@@ -18,6 +18,63 @@
   background-size: auto, 34px 34px, 34px 34px;
 }
 
+.toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: min(100% - 32px, 420px);
+  padding: 16px 18px;
+  border: 1px solid rgba(23, 114, 105, 0.18);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(229, 250, 243, 0.97) 0%, rgba(215, 241, 232, 0.98) 100%);
+  box-shadow: 0 20px 45px rgba(28, 70, 55, 0.18);
+}
+
+.toast.error {
+  border-color: rgba(142, 45, 36, 0.18);
+  background: linear-gradient(135deg, rgba(253, 234, 231, 0.98) 0%, rgba(248, 216, 210, 0.98) 100%);
+}
+
+.toast-copy {
+  display: grid;
+  gap: 4px;
+  flex: 1;
+}
+
+.toast-title,
+.toast-message {
+  margin: 0;
+}
+
+.toast-title {
+  color: #173a34;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.toast.error .toast-title,
+.toast.error .toast-message {
+  color: #7d261f;
+}
+
+.toast-message {
+  color: #155948;
+  line-height: 1.5;
+}
+
+.toast-close {
+  border: none;
+  background: transparent;
+  color: #1d564c;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .product-card {
   position: relative;
   z-index: 1;
@@ -94,41 +151,203 @@ input {
   font: inherit;
 }
 
-.hint-box,
-.action-row {
+.date-toggle-group {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid rgba(23, 114, 105, 0.14);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(238, 249, 247, 0.86) 0%, rgba(255, 252, 245, 0.92) 100%);
+  cursor: pointer;
+}
+
+.checkbox-field input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+  margin: 2px 0 0;
+  padding: 0;
+  accent-color: #177269;
+  cursor: pointer;
+}
+
+.checkbox-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.checkbox-title {
+  color: #183630;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.checkbox-description {
+  color: #537169;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.action-row,
+.confirmation-card,
+.feedback {
   grid-column: 1 / -1;
 }
 
-.hint-box {
-  padding: 16px 18px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #eef9f7 0%, #dff0eb 100%);
-  color: #295048;
+.feedback {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  font-weight: 600;
 }
 
-.hint-box p {
+.feedback.success {
+  color: #155948;
+  background: linear-gradient(135deg, #e5faf3 0%, #d7f1e8 100%);
+}
+
+.feedback.error {
+  color: #8e2d24;
+  background: linear-gradient(135deg, #fdeae7 0%, #f8d8d2 100%);
+}
+
+.confirmation-card {
+  position: relative;
+  overflow: hidden;
+  padding: 18px 20px;
+  border: 1px solid rgba(23, 114, 105, 0.18);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(237, 249, 245, 0.94) 0%, rgba(255, 250, 239, 0.96) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.confirmation-card::after {
+  content: '';
+  position: absolute;
+  inset: auto -40px -50px auto;
+  width: 160px;
+  height: 160px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(36, 160, 141, 0.18) 0%, rgba(36, 160, 141, 0) 70%);
+  pointer-events: none;
+}
+
+.confirmation-copy-block {
+  position: relative;
+  z-index: 1;
+}
+
+.confirmation-badge {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #0f5f54;
+  background: rgba(23, 114, 105, 0.12);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.confirmation-title,
+.confirmation-copy {
   margin: 0;
 }
 
-.hint-box p + p {
-  margin-top: 6px;
+.confirmation-title {
+  color: #173a34;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
-.disabled-action {
+.confirmation-copy {
+  margin-top: 8px;
+  color: #527168;
+  line-height: 1.6;
+  max-width: 52ch;
+}
+
+.confirmation-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.primary-action,
+.secondary-action {
   min-height: 52px;
   padding: 0 18px;
-  border: none;
   border-radius: 16px;
-  color: #ffffff;
-  background: linear-gradient(135deg, #6ca598 0%, #8bb8ae 100%);
   font-size: 0.98rem;
   font-weight: 700;
-  opacity: 0.9;
+  cursor: pointer;
+}
+
+.primary-action {
+  border: none;
+  color: #ffffff;
+  background: linear-gradient(135deg, #177269 0%, #24a08d 100%);
+}
+
+.primary-action:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.secondary-action {
+  border: 1px solid rgba(23, 114, 105, 0.18);
+  color: #1d564c;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.save-product-button {
+  min-width: 240px;
+  box-shadow: 0 16px 28px rgba(23, 114, 105, 0.2);
+}
+
+.confirmation-save,
+.confirmation-cancel {
+  min-width: 150px;
+}
+
+.primary-action:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(23, 114, 105, 0.22);
+}
+
+.secondary-action:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.98);
 }
 
 @media (max-width: 720px) {
   .product-shell {
     padding: 16px;
+  }
+
+  .toast {
+    top: 16px;
+    right: 16px;
+    left: 16px;
+    width: auto;
   }
 
   .product-card {
@@ -139,4 +358,50 @@ input {
   .product-form {
     grid-template-columns: 1fr;
   }
+
+  .action-row {
+    display: grid;
+  }
+
+  .save-product-button,
+  .confirmation-save,
+  .confirmation-cancel {
+    width: 100%;
+    min-width: 0;
+  }
+}
+.barcode-field {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 12px;
+}
+
+.scanner-card {
+  grid-column: 1 / -1;
+  padding: 18px;
+  border: 1px solid rgba(23, 114, 105, 0.18);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.scanner-title {
+  margin: 0 0 12px;
+  font-weight: 700;
+  color: #173a34;
+}
+
+zxing-scanner {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  min-height: 280px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000;
+}
+
+.scanner-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
 }

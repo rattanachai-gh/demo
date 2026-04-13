@@ -2,6 +2,7 @@ package com.tonggaw.demo.entity;
 
 import java.util.Date;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -35,10 +36,10 @@ public class Product {
 	
 	private boolean expiredDateExisted; 
 	
-	
+	@Nullable
 	private Date recievedDate;
 	
-	
+	@Nullable
 	private Date expiredDate;
 
 	@Getter

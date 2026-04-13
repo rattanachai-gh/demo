@@ -1,5 +1,6 @@
 package com.tonggaw.demo.repository;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.tonggaw.demo.entity.Product;

@@ -22,9 +22,13 @@
     }
 
     <div class="action-grid">
-      <a class="primary-action" routerLink="/products/add">
+      <button
+        type="button"
+        class="primary-action"
+        (click)="goToAddProductPage()"
+      >
         Go to add product page
-      </a>
+      </button>
 
       <button
         type="button"

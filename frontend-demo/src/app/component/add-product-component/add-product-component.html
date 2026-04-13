@@ -1,6 +1,21 @@
 <section class="product-shell">
   <div class="product-backdrop"></div>
 
+  @if (toastMessage) {
+    <aside class="toast" [class.error]="toastVariant === 'error'">
+      <div class="toast-copy">
+        <p class="toast-title">
+          {{ toastVariant === 'success' ? 'Success' : 'Error' }}
+        </p>
+        <p class="toast-message">{{ toastMessage }}</p>
+      </div>
+
+      <button type="button" class="toast-close" (click)="dismissToast()">
+        Close
+      </button>
+    </aside>
+  }
+
   <article class="product-card">
     <div class="product-header">
       <div>
@@ -11,55 +26,186 @@
       <a class="back-link" routerLink="/home">Back to home</a>
     </div>
 
-    <p class="description">
-      This page is prepared to match the current fields in the `Product` entity from the demo backend.
-      The save API is not available yet, so this page is ready for the next integration step.
-    </p>
-
-    <form class="product-form">
+    <form
+      #productNgForm="ngForm"
+      class="product-form"
+      (ngSubmit)="addProduct()"
+    >
       <label>
         <span>Product SKU</span>
-        <input type="text" placeholder="SKU-0001" />
+        <input name="productSku" [(ngModel)]="productForm.productSku" />
       </label>
 
       <label>
         <span>Product Name</span>
-        <input type="text" placeholder="Arabica Coffee Beans" />
+        <input name="productName" [(ngModel)]="productForm.productName" />
       </label>
 
       <label>
         <span>Unit of Measure</span>
-        <input type="text" placeholder="bag, box, bottle" />
+        <input name="unitOfMeasure" [(ngModel)]="productForm.unitOfMeasure" />
       </label>
 
       <label>
+        <span>Product Barcode</span>
+        <input name="productBarCode" [(ngModel)]="productForm.productBarCode" />
+      </label>
+
+      <div class="barcode-field">
+        <label>
+          <span>Product Barcode</span>
+          <input
+            name="productBarCode"
+            [(ngModel)]="productForm.productBarCode"
+            placeholder="Scan or type barcode"
+          />
+        </label>
+
+        <button
+          type="button"
+          class="secondary-action"
+          (click)="openScanner()"
+        >
+          Scan barcode
+        </button>
+      </div>
+
+      @if (isScannerOpen) {
+        <section class="scanner-card">
+          <p class="scanner-title">Barcode Scanner</p>
+
+          <zxing-scanner
+            [enable]="isScannerOpen"
+            (scanSuccess)="onScanSuccess($event)"
+            (permissionResponse)="onPermissionResponse($event)"
+            (scanError)="onScanError($event)"
+          >
+          </zxing-scanner>
+
+          @if (hasCameraPermission === false) {
+            <p class="feedback error">
+              ไม่สามารถใช้งานกล้องได้ กรุณาอนุญาต camera permission
+            </p>
+          }
+
+          <div class="scanner-actions">
+            <button
+              type="button"
+              class="secondary-action"
+              (click)="closeScanner()"
+            >
+              Close scanner
+            </button>
+          </div>
+        </section>
+      }
+
+      <label>
         <span>Product Quantity</span>
-        <input type="number" placeholder="0" />
+        <input
+          type="number"
+          name="productQty"
+          [(ngModel)]="productForm.productQty"
+        />
       </label>
 
       <label>
         <span>Price Per Unit</span>
-        <input type="number" placeholder="0" />
+        <input
+          type="number"
+          name="productPricePerUnit"
+          [(ngModel)]="productForm.productPricePerUnit"
+        />
       </label>
 
-      <label>
-        <span>Received Date</span>
-        <input type="date" />
-      </label>
+      <!-- Received Date -->
+      <div class="date-toggle-group">
+        <label class="checkbox-field">
+          <input
+            type="checkbox"
+            [checked]="noReceivedDate"
+            (change)="onNoReceivedDateChange($any($event.target).checked)"
+          />
+          <span>ไม่มีวันรับสินค้า</span>
+        </label>
 
-      <label>
-        <span>Expired Date</span>
-        <input type="date" />
-      </label>
-
-      <div class="hint-box">
-        <p>Next backend step needed:</p>
-        <p>Create a product controller/service/repository endpoint to save product data for the authenticated user.</p>
+        @if (!noReceivedDate) {
+          <label>
+            <span>Received Date</span>
+            <input
+              type="date"
+              name="recievedDate"
+              [(ngModel)]="productForm.recievedDate"
+            />
+          </label>
+        }
       </div>
 
+      <!-- Expired Date -->
+      <div class="date-toggle-group">
+        <label class="checkbox-field">
+          <input
+            type="checkbox"
+            [checked]="noExpiredDate"
+            (change)="onNoExpiredDateChange($any($event.target).checked)"
+          />
+          <span>ไม่มีวันหมดอายุสินค้า</span>
+        </label>
+
+        @if (!noExpiredDate) {
+          <label>
+            <span>Expired Date</span>
+            <input
+              type="date"
+              name="expiredDate"
+              [(ngModel)]="productForm.expiredDate"
+            />
+          </label>
+        }
+      </div>
+
+      @if (showSaveConfirmation) {
+        <section class="confirmation-card">
+          <div class="confirmation-copy-block">
+            <p class="confirmation-badge">Ready to save</p>
+            <p class="confirmation-title">Confirm product save?</p>
+            <p class="confirmation-copy">
+              ตรวจสอบข้อมูลสินค้าอีกครั้ง แล้วกดบันทึกเพื่อเพิ่มสินค้าเข้าสู่ inventory
+            </p>
+          </div>
+
+          <div class="confirmation-actions">
+            <button
+              type="button"
+              class="primary-action confirmation-save"
+              (click)="confirmSave()"
+            >
+              Save product
+            </button>
+
+            <button
+              type="button"
+              class="secondary-action confirmation-cancel"
+              (click)="cancelSaveConfirmation()"
+            >
+              Cancel
+            </button>
+          </div>
+        </section>
+      }
+
       <div class="action-row">
-        <button type="button" class="disabled-action" disabled>
-          Save product coming soon
+        <button
+          type="submit"
+          class="primary-action save-product-button"
+          [disabled]="
+            isSaving ||
+            !productForm.productSku ||
+            !productForm.productName ||
+            !productForm.unitOfMeasure
+          "
+        >
+          {{ isSaving ? 'Saving product...' : 'Review and save product' }}
         </button>
       </div>
     </form>

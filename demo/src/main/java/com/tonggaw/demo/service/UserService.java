@@ -2,9 +2,7 @@ package com.tonggaw.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import org.springframework.stereotype.Service;
-
 
 import com.tonggaw.demo.entity.User;
 import com.tonggaw.demo.record.RegReq;
@@ -35,6 +33,10 @@ public class UserService {
 		user.setUserLastName(regReq.lastname());
 		return this.userRepository.save(user);
 
+	}
+
+	public User findByUsername(String username) {
+		return this.userRepository.findById(username).orElse(null);
 	}
 	
 }
