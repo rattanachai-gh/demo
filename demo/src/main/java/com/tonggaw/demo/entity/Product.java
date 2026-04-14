@@ -5,6 +5,7 @@ import java.util.Date;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -13,11 +14,14 @@ import lombok.Setter;
 
 @Entity
 @Table(name="products")
+@IdClass(ProductId.class)
 public class Product {
 	
 	@Id
-	private String productSku;
-	
+    private String productSku;
+
+    @Id
+    private String productSpu;
 	
 	private String productName;
 	
@@ -149,6 +153,14 @@ public class Product {
 	public void setByUser(User byUser) {
 		this.byUser = byUser;
 	}
+
+    public String getProductSpu() {
+        return productSpu;
+    }
+
+    public void setProductSpu(String productSpu) {
+        this.productSpu = productSpu;
+    }
 	
 	
 	

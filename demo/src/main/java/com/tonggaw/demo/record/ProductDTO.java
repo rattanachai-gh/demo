@@ -3,7 +3,7 @@ package com.tonggaw.demo.record;
 import java.util.Date;
 
 public record ProductDTO(
-
+    String productSpu,
     String productSku,
     String productName,
     String unitOfMeasure,
@@ -17,4 +17,7 @@ public record ProductDTO(
     Date expiredDate,
 
     String productBarCode
-) {}
+) 
+{
+    
+}

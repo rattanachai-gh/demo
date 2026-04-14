@@ -2,6 +2,7 @@ package com.tonggaw.demo.controller;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import com.tonggaw.demo.record.ProductDTO;
 import com.tonggaw.demo.security.CustomUserDetails;
 import com.tonggaw.demo.service.ProductService;
 import com.tonggaw.demo.service.UserService;
+
 
 @RestController 
 @RequestMapping("/api/products")
@@ -36,8 +38,9 @@ public class ProductController {
     @PostMapping("/add")
     public ResponseEntity<?> addNewProduct(@RequestBody ProductDTO productDTO, Authentication authentication) {
         Product product = new Product();
-        product.setProductName(productDTO.productName());
+        product.setProductSpu(productDTO.productSpu());
         product.setProductSku(productDTO.productSku());
+        product.setProductName(productDTO.productName());
         product.setUnitOfMeasure(productDTO.unitOfMeasure());
         product.setProductQty(productDTO.productQty()); 
         product.setProductPricePerUnit(productDTO.productPricePerUnit());
@@ -45,7 +48,11 @@ public class ProductController {
         product.setExpiredDateExisted(productDTO.expiredDateExisted());
         product.setRecievedDate(productDTO.recievedDate());
         product.setExpiredDate(productDTO.expiredDate());
-        if (productService.findByBarcode(productDTO.productBarCode()).equals(productDTO.productBarCode())) {
+
+        System.out.println("productDTO = " + productDTO);
+        System.out.println("barcode = " + productDTO.productBarCode());
+        Product existingProductByBarCode = productService.findByBarCode(productDTO.productBarCode());
+        if (Objects.nonNull(existingProductByBarCode)) {
             return ResponseEntity.badRequest().body(Map.of("message", "Product with the same barcode already exists"));
         }
         product.setProductBarCode(productDTO.productBarCode());

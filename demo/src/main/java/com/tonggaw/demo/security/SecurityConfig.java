@@ -101,7 +101,7 @@ public class SecurityConfig {
         "http://192.168.1.112:4200",
         "https://localhost:4200",
         "https://192.168.1.112:4200"));
-		configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+		configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
 		configuration.setAllowedHeaders(Arrays.asList("Authorization","Content-Type","X-CSRF-TOKEN"));
 		configuration.setAllowCredentials(true);
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -1,186 +1,244 @@
 <section class="product-shell">
   <div class="product-backdrop"></div>
 
-  @if (toastMessage) {
-    <aside class="toast" [class.error]="toastVariant === 'error'">
-      <div class="toast-copy">
-        <p class="toast-title">
-          {{ toastVariant === 'success' ? 'Success' : 'Error' }}
-        </p>
-        <p class="toast-message">{{ toastMessage }}</p>
-      </div>
-
-      <button type="button" class="toast-close" (click)="dismissToast()">
-        Close
-      </button>
-    </aside>
-  }
-
   <article class="product-card">
     <div class="product-header">
-      <div>
-        <p class="eyebrow">Inventory</p>
+      <div class="header-copy">
+        <p class="eyebrow">Inventory Workspace</p>
         <h1>Add Product</h1>
+        <p class="header-text">
+          Create a clean product entry now and keep this layout ready for scanner,
+          validation, media upload, and inventory automation features later.
+        </p>
       </div>
 
-      <a class="back-link" routerLink="/home">Back to home</a>
+      <div class="header-actions">
+        <a class="back-link" routerLink="/home">Back to home</a>
+        <div class="status-chip">Draft mode</div>
+      </div>
     </div>
 
-    <form
-      #productNgForm="ngForm"
-      class="product-form"
-      (ngSubmit)="addProduct()"
-    >
-      <label>
-        <span>Product SKU</span>
-        <input name="productSku" [(ngModel)]="productForm.productSku" />
-      </label>
+    <div class="product-layout">
+      <aside class="product-sidebar">
+        <section class="sidebar-panel accent-panel">
+          <p class="panel-label">Setup Guide</p>
+          <h2>Ready for the next feature wave</h2>
+          <p>
+            This page is structured to grow smoothly with scanner tools, category
+            mapping, image upload, validation states, and supplier metadata.
+          </p>
+        </section>
 
-      <label>
-        <span>Product Name</span>
-        <input name="productName" [(ngModel)]="productForm.productName" />
-      </label>
+        <section class="sidebar-panel">
+          <p class="panel-label">Quick Notes</p>
+          <ul class="feature-list">
+            <li>Keep SKU, barcode, and pricing easy to scan.</li>
+            <li>Date fields can be expanded with validation and warnings.</li>
+            <li>The footer area is ready for save, draft, and action buttons.</li>
+          </ul>
+        </section>
+      </aside>
 
-      <label>
-        <span>Unit of Measure</span>
-        <input name="unitOfMeasure" [(ngModel)]="productForm.unitOfMeasure" />
-      </label>
-
-      <label>
-        <span>Product Barcode</span>
-        <div style="display: flex; gap: 8px;">
-          <input
-            name="productBarCode"
-            [(ngModel)]="productForm.productBarCode"
-            placeholder="Type or scan barcode"
-            style="flex: 1"
-          />
-          <button type="button" (click)="openScanner()">
-            Scan
-          </button>
-        </div>
-      </label>
-
-      @if (isScannerOpen) {
-        <div class="scanner-overlay">
-          <div class="scanner-modal">
-            <p class="scanner-label">Point camera at barcode</p>
-            <video #scannerVideo autoplay playsinline></video>
-            @if (scannerError) {
-              <p class="scanner-error">{{ scannerError }}</p>
-            }
-            <button type="button" (click)="closeScanner()">Cancel</button>
+      <form #productNgForm="ngForm" class="product-form" (ngSubmit)="addNewProduct()">
+        <section class="form-section">
+          <div class="section-heading">
+            <p class="section-kicker">Core Details</p>
+            <h2>Product identity</h2>
           </div>
-        </div>
-      }
 
-      <label>
-        <span>Product Quantity</span>
-        <input
-          type="number"
-          name="productQty"
-          [(ngModel)]="productForm.productQty"
-        />
-      </label>
+          <div class="field-grid">
+            <label class="field">
+              <span>Product SPU</span>
+              <input
+                name="productSpu"
+                [(ngModel)]="productData.productSpu"
+                placeholder="SPU-2026-001"
+              />
+            </label>
 
-      <label>
-        <span>Price Per Unit</span>
-        <input
-          type="number"
-          name="productPricePerUnit"
-          [(ngModel)]="productForm.productPricePerUnit"
-        />
-      </label>
+            <label class="field">
+              <span>Product SKU</span>
+              <input
+                name="productSku"
+                [(ngModel)]="productData.productSku"
+                placeholder="SKU-APPLE-001"
+                required="true"
+              />
+            </label>
 
-      <div class="date-toggle-group">
-        <label class="checkbox-field">
-          <input
-            type="checkbox"
-            [checked]="noReceivedDate"
-            (change)="onNoReceivedDateChange($any($event.target).checked)"
-          />
-          <span>No received date</span>
-        </label>
+            <label class="field field-full">
+              <span>Product Name</span>
+              <input
+                name="productName"
+                [(ngModel)]="productData.productName"
+                placeholder="Fresh Green Apple"
+                required="true"
+              />
+            </label>
 
-        @if (!noReceivedDate) {
-          <label>
-            <span>Received Date</span>
-            <input
-              type="date"
-              name="recievedDate"
-              [(ngModel)]="productForm.recievedDate"
-            />
-          </label>
-        }
-      </div>
+            <label class="field">
+              <span>Unit of Measure</span>
+              <input
+                name="unitOfMeasure"
+                [(ngModel)]="productData.unitOfMeasure"
+                placeholder="Piece, Box, Kg"
+                required="true"
+              />
+            </label>
 
-      <div class="date-toggle-group">
-        <label class="checkbox-field">
-          <input
-            type="checkbox"
-            [checked]="noExpiredDate"
-            (change)="onNoExpiredDateChange($any($event.target).checked)"
-          />
-          <span>No expiry date</span>
-        </label>
+          </div>
+        </section>
 
-        @if (!noExpiredDate) {
-          <label>
-            <span>Expired Date</span>
-            <input
-              type="date"
-              name="expiredDate"
-              [(ngModel)]="productForm.expiredDate"
-            />
-          </label>
-        }
-      </div>
+        <section class="form-section">
+          <div class="section-heading">
+            <p class="section-kicker">Stock Details</p>
+            <h2>Inventory and pricing</h2>
+          </div>
 
-      @if (showSaveConfirmation) {
-        <section class="confirmation-card">
-          <div class="confirmation-copy-block">
-            <p class="confirmation-badge">Ready to save</p>
-            <p class="confirmation-title">Confirm product save?</p>
-            <p class="confirmation-copy">
-              ตรวจสอบข้อมูลสินค้าอีกครั้ง แล้วกดบันทึกเพื่อเพิ่มสินค้าเข้าสู่
-              inventory
+          <div class="field-grid">
+            <label class="field">
+              <span>Quantity</span>
+              <input
+                name="productQty"
+                type="number"
+                [(ngModel)]="productData.productQty"
+                placeholder="0"
+                required="true"
+              />
+            </label>
+
+            <label class="field">
+              <span>Price per Unit</span>
+              <input
+                name="productPricePerUnit"
+                type="number"
+                step="0.01"
+                [(ngModel)]="productData.productPricePerUnit"
+                placeholder="0.00"
+                required="true"
+              />
+            </label>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <div class="section-heading">
+            <p class="section-kicker">Lifecycle</p>
+            <h2>Dates and timing</h2>
+          </div>
+
+          <div class="date-grid">
+            <div class="date-card">
+              <div class="date-card-top">
+                <div>
+                  <h3>Received date</h3>
+                  <p>Track when stock entered inventory.</p>
+                </div>
+                <label class="checkbox-field">
+                  <input
+                    type="checkbox"
+                    [checked]="noReceivedDate"
+                    (change)="onNoReceivedDateChange($any($event.target).checked)"
+                  />
+                  <span>No date</span>
+                </label>
+              </div>
+
+              @if (!noReceivedDate) {
+                <label class="field">
+                  <span>Received Date</span>
+                  <input
+                    type="date"
+                    name="recievedDate"
+                    [(ngModel)]="productData.recievedDate"
+                  />
+                </label>
+              } @else {
+                <div class="date-empty-state">This product will be stored without a received date.</div>
+              }
+            </div>
+
+            <div class="date-card">
+              <div class="date-card-top">
+                <div>
+                  <h3>Expired date</h3>
+                  <p>Useful for alerts, batches, and stock rotation.</p>
+                </div>
+                <label class="checkbox-field">
+                  <input
+                    type="checkbox"
+                    [checked]="noExpiredDate"
+                    (change)="onNoExpiredDateChange($any($event.target).checked)"
+                  />
+                  <span>No date</span>
+                </label>
+              </div>
+
+              @if (!noExpiredDate) {
+                <label class="field">
+                  <span>Expired Date</span>
+                  <input
+                    type="date"
+                    name="expiredDate"
+                    [(ngModel)]="productData.expiredDate"
+                  />
+                </label>
+              } @else {
+                <div class="date-empty-state">This product will be stored without an expiration date.</div>
+              }
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <div class="section-heading">
+            <p class="section-kicker">Identification</p>
+            <h2>Barcode input</h2>
+          </div>
+
+          <div class="field-grid">
+            <label class="field field-full">
+              <span>Barcode</span>
+              <div class="barcode-row">
+                <input
+                  name="productBarCode"
+                  [(ngModel)]="productData.productBarCode"
+                  placeholder="Type or scan barcode"
+                  required="true"
+                />
+                <button type="button" class="secondary-button" disabled>
+                  Scan soon
+                </button>
+              </div>
+            </label>
+          </div>
+        </section>
+
+        <section class="form-footer">
+          <div class="footer-copy">
+            <p class="footer-title">Ready for future actions</p>
+            <p>
+              This action area can later host draft saving, validation feedback,
+              scanner triggers, and supplier sync actions.
             </p>
           </div>
 
-          <div class="confirmation-actions">
-            <button
-              type="button"
-              class="primary-action confirmation-save"
-              (click)="confirmSave()"
-            >
+          <div class="footer-actions">
+            <a class="ghost-button" routerLink="/home">Cancel</a>
+            <button type="submit" class="primary-button" [disabled]="productNgForm.invalid">
               Save product
-            </button>
-
-            <button
-              type="button"
-              class="secondary-action confirmation-cancel"
-              (click)="cancelSaveConfirmation()"
-            >
-              Cancel
             </button>
           </div>
         </section>
-      }
 
-      <div class="action-row">
-        <button
-          type="submit"
-          class="primary-action save-product-button"
-          [disabled]="
-            isSaving ||
-            !productForm.productSku ||
-            !productForm.productName ||
-            !productForm.unitOfMeasure
-          "
-        >
-          {{ isSaving ? 'Saving product...' : 'Review and save product' }}
-        </button>
-      </div>
-    </form>
+        <!-- @if (isScannerOpen) {
+          <div class="scanner-overlay">
+            <div class="scanner-modal">
+              <p class="scanner-label">Point camera at barcode</p>
+            </div>
+          </div>
+        } -->
+      </form>
+    </div>
   </article>
 </section>

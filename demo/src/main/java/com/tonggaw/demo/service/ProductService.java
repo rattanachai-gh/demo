@@ -21,9 +21,9 @@ public class ProductService {
     }
 
 
-    public String findByBarcode(String barcode) {
+    public Product findByBarCode(String barcode) {
     
-        return productRepository.findByBarcode(barcode);
+        return productRepository.findByProductBarCode(barcode);
 
     }
 

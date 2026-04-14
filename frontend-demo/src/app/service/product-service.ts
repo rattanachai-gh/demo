@@ -4,15 +4,20 @@ import { Product } from '../model/product.model';
 import { AuthService } from './auth-service';
 import { switchMap } from 'rxjs';
 
+export interface AddProductResponse {
+  message: string;
+  productSku?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService  {
 
 
-  // private productApiUrl = `https://localhost:8080/api/products`;
+  private productApiUrl = `https://localhost:8080/api/products`;
  // private productApiUrl = `http://192.168.1.112:8080/api/products`;
-  private productApiUrl = `https://192.168.1.112:8080/api/products`;
+  // private productApiUrl = `https://192.168.1.112:8080/api/products`;
   constructor(
     private http: HttpClient,
     private authService: AuthService,
@@ -27,7 +32,7 @@ export class ProductService  {
           'X-CSRF-TOKEN': token
         });
 
-        return this.http.post(`${this.productApiUrl}/add`, productData, {
+        return this.http.post<AddProductResponse>(`${this.productApiUrl}/add`, productData, {
           headers,
           withCredentials: true
         });

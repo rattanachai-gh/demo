@@ -16,14 +16,17 @@ export class AuthService {
   // private baseUrl = `https://localhost:8080/auth`;
   // private csrfApiUrl = `https://localhost:8080/api`;
 
+  private baseUrl = `https://localhost:8080/auth`;
+  private csrfApiUrl = `https://localhost:8080/api`;
+
+
   /*private baseUrl = `http://192.168.1.112:8080/auth`;
   private csrfApiUrl = `http://192.168.1.112:8080/api`;*/
-  private baseUrl = `https://192.168.1.112:8080/auth`;
-  private csrfApiUrl = `https://192.168.1.112:8080/api`;
+  // private baseUrl = `https://192.168.1.112:8080/auth`;
+  // private csrfApiUrl = `https://192.168.1.112:8080/api`;
   
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) { }
 
-  }
   getCsrfToken(): Observable<string> {
     return this.http.get(`${this.csrfApiUrl}/csrf`, {
       withCredentials: true,

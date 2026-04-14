@@ -19,8 +19,8 @@
           name="username"
           autocomplete="username"
           placeholder="Enter your username"
-          [value]="credentials.username || ''"
-          (input)="credentials.username = $any($event.target).value"
+          [value]="getCredentials.username || ''"
+          (input)="getCredentials.username = $any($event.target).value"
         />
       </label>
 
@@ -31,15 +31,15 @@
           name="password"
           autocomplete="current-password"
           placeholder="Enter your password"
-          [value]="credentials.password || ''"
-          (input)="credentials.password = $any($event.target).value"
+          [value]="getCredentials.password || ''"
+          (input)="getCredentials.password = $any($event.target).value"
         />
       </label>
 
       <button
         class="login-button"
         type="submit"
-        [disabled]="!credentials.username || !credentials.password"
+        [disabled]="!getCredentials.username || !getCredentials.password"
       >
         Sign In
       </button>
